@@ -146,7 +146,7 @@ def config_modelloader(config, load_pretrain = False, cuda = False):
             model_file = get_path(config, model_id, "model")
             #model_file += "_pretrain"
             print("Loading model file", model_file)
-            checkpoint = torch.load(model_file)
+            checkpoint = torch.load(model_file, map_location='cuda' if cuda else 'cpu')
             if isinstance(checkpoint["state_dict"], list):
                 checkpoint["state_dict"] = checkpoint["state_dict"][0]
             new_state_dict = {}
