@@ -53,7 +53,7 @@ def load_config(args):
     print("loading config file: {}".format(args.config))
     with open(os.path.join((os.path.abspath(__file__)).strip('config.py'), "defaults.json")) as f:
         config = json.load(f)
-    with open(args.config) as f:
+    with open(os.path.join((os.path.abspath(__file__)).strip('config.py'), args.config)) as f:
         update_dict(config, json.load(f))
     if args.overrides_dict:
         print("overriding parameters: \033[93mPlease check these parameters carefully.\033[0m")
