@@ -51,6 +51,7 @@ def update_dict(d, u, show_warning = False):
 
 def load_config(args):
     print("loading config file: {}".format(args.config))
+    print(os.getcwd())
     with open("defaults.json") as f:
         config = json.load(f)
     with open(args.config) as f:
