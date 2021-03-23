@@ -102,6 +102,7 @@ def config_dataloader(config, **kwargs):
 # To change format of saved model names, etc, only change here
 def get_path(config, model_id, path_name, **kwargs):
     if path_name == "model":
+        print(os.path.join(config["path_prefix"], config["models_path"], model_id))
         model_file = get_file_close(os.path.join(config["path_prefix"], config["models_path"], model_id), "pth", **kwargs)
         os.makedirs(os.path.join(config["path_prefix"], config["models_path"]), exist_ok = True)
         return model_file
