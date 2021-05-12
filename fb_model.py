@@ -33,18 +33,19 @@ def create():
     models, model_names = config_modelloader(config, load_pretrain=True,
                                              cuda=torch.cuda.is_available())
 
+    model, model_id, model_config = models[0], model_names[0], config["models"][0]
 
+    eval_config = copy.deepcopy(global_eval_config)
+    if "eval_params" in model_config:
+        eval_config.update(model_config["eval_params"])
+    model = BoundSequential.convert(model, eval_config["method_params"]["bound_opts"])
+    if torch.cuda.is_available():
+        model = model.cuda()
+    model.eval()
 
-    for model, model_id, model_config in zip(models, model_names, config["models"]):
-        # make a copy of global training config, and update per-model config
-        eval_config = copy.deepcopy(global_eval_config)
-        if "eval_params" in model_config:
-            eval_config.update(model_config["eval_params"])
-        model.eval()
+    preprocessing = {'mean': 0.0, 'std': 1.0}
+    fmodel = fb.models.PyTorchModel(model, bounds=(0, 1),
+                                    preprocessing=preprocessing,
+                                    device=device)
 
-        preprocessing = {'mean': 0.0, 'std': 1.0}
-        fmodel = fb.models.PyTorchModel(model, bounds=(0, 1),
-                                        preprocessing=preprocessing,
-                                        device=device)
-
-        return fmodel
+    return fmodel

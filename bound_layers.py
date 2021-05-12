@@ -295,7 +295,6 @@ class BoundSequential(Sequential):
 
     ## The __call__ function is overwritten for DataParallel
     def __call__(self, *input, **kwargs):
-        
         if "method_opt" in kwargs:
             opt = kwargs["method_opt"]
             kwargs.pop("method_opt")

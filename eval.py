@@ -33,9 +33,9 @@ def main(args):
         eval_config = copy.deepcopy(global_eval_config)
         if "eval_params" in model_config:
             eval_config.update(model_config["eval_params"])
-
-        model = BoundSequential.convert(model, eval_config["method_params"]["bound_opts"]) 
-        model = model.cuda()
+        model = BoundSequential.convert(model, eval_config["method_params"]["bound_opts"])
+        if torch.cuda.is_available():
+            model = model.cuda()
         # read training parameters from config file
         method = eval_config["method"]
         verbose = eval_config["verbose"]
