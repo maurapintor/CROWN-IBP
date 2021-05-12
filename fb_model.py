@@ -1,18 +1,11 @@
 
 import copy
 from collections import namedtuple
-from functools import partial
 
 import torch
-import numpy as np
-import torchvision
-from torchvision.transforms import transforms
 
 from bound_layers import BoundSequential
-from eps_scheduler import EpsilonScheduler
-from config import load_config, get_path, config_modelloader, config_dataloader
-from argparser import argparser
-from train import Train, Logger
+from config import load_config, config_modelloader
 import foolbox as fb
 
 class BoundSequential2(BoundSequential):

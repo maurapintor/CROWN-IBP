@@ -51,9 +51,9 @@ def update_dict(d, u, show_warning = False):
 
 def load_config(args):
     print("loading config file: {}".format(args.config))
-    with open("defaults.json") as f:
+    with open(os.path.join((os.path.abspath(__file__)).strip('config.py'), "defaults.json")) as f:
         config = json.load(f)
-    with open(args.config) as f:
+    with open(os.path.join((os.path.abspath(__file__)).strip('config.py'), args.config)) as f:
         update_dict(config, json.load(f))
     if args.overrides_dict:
         print("overriding parameters: \033[93mPlease check these parameters carefully.\033[0m")
@@ -101,8 +101,10 @@ def config_dataloader(config, **kwargs):
 # Unified naming rule for model files, bound files, ensemble weights and others
 # To change format of saved model names, etc, only change here
 def get_path(config, model_id, path_name, **kwargs):
+    path_orig = os.path.abspath(__file__).strip('config.py')
     if path_name == "model":
-        model_file = get_file_close(os.path.join(config["path_prefix"], config["models_path"], model_id), "pth", **kwargs)
+        model_file = get_file_close(os.path.join(path_orig, os.path.join(config["path_prefix"]),
+                                                 config["models_path"], model_id), "pth", **kwargs)
         os.makedirs(os.path.join(config["path_prefix"], config["models_path"]), exist_ok = True)
         return model_file
     if path_name == "best_model":
